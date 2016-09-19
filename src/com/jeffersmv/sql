@@ -1,0 +1,6 @@
+CREATE TABLE `exercise102`.`student` ( `id` INT NOT NULL AUTO_INCREMENT , `firstName` VARCHAR(16) NOT NULL , `LastName` VARCHAR(16) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE `exercise102`.`object` ( `id` INT NOT NULL AUTO_INCREMENT , `object` VARCHAR(16) NOT NULL , `studentId` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE `exercise102`.`grade` ( `id` INT NOT NULL AUTO_INCREMENT , `grade` INT NOT NULL , `objectId` INT NOT NULL , `studentId` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
