@@ -11,11 +11,13 @@ public class Main {
         controllerDAO.getAllStudents();
         controllerDAO.getAllObjects();
         controllerDAO.getAllObjectsGradeOneStudent(2);
+
         StudentsDTO studentsDTO = new StudentsDTO();
         studentsDTO.setId(0);
         studentsDTO.setFirstName("Jeff");
         studentsDTO.setLastName("Jefferson");
         controllerDAO.createStudent(studentsDTO);
+
         studentsDTO.setId(11);
         studentsDTO.setFirstName("Jeff");
         studentsDTO.setLastName("Jeffe333son");
@@ -23,6 +25,11 @@ public class Main {
 
         controllerDAO.deleteStudent(39);
 
+
+
+
+
+        controllerDAO.closeConnection();
     }
 
 

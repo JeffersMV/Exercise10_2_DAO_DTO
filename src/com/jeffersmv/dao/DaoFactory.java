@@ -19,9 +19,10 @@ public class DaoFactory {
         Properties prop = new Properties();
         Connection connection;
         try {
+
 //          prop.load(new FileInputStream("\\com\\jeffersmv\\resource\\connect.properties"));
             prop.load(DaoFactory.class.getClassLoader().getResourceAsStream("connect.properties"));
-//            prop.load(inputStream);
+//          prop.load(inputStream);
 //          InputStream inputStream =  this.getClass().getClassLoader().getResourceAsStream("connect.properties");
 //          Scanner s = new Scanner(this.getClass().getClassLoader().getResourceAsStream("src//FileIsTest"));
 
@@ -32,12 +33,12 @@ public class DaoFactory {
         return connection;
     }
 
-    public void closeConnection(Connection connection) {
+    public static void closeConnection(Connection connection) throws DaoException {
         if (connection == null) return;
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DaoException(e);
         }
     }
 }

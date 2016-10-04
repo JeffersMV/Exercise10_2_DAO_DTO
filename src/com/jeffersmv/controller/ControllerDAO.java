@@ -1,11 +1,15 @@
 package com.jeffersmv.controller;
 
-import com.jeffersmv.dao.*;
-import com.jeffersmv.dao.sqldao.*;
-import com.jeffersmv.dto.*;
+import com.jeffersmv.dao.DaoException;
+import com.jeffersmv.dao.DaoFactory;
+import com.jeffersmv.dao.sqldao.DaoGrade;
+import com.jeffersmv.dao.sqldao.DaoObjects;
+import com.jeffersmv.dao.sqldao.DaoStudents;
+import com.jeffersmv.dto.GradeDTO;
+import com.jeffersmv.dto.ObjectsDTO;
+import com.jeffersmv.dto.StudentsDTO;
 
 import java.sql.Connection;
-import java.util.Iterator;
 import java.util.List;
 
 public class ControllerDAO extends DaoException {
@@ -18,13 +22,12 @@ public class ControllerDAO extends DaoException {
         this.daoStudents = new DaoStudents(connection);
         this.daoObjects = new DaoObjects(connection);
         this.daoGrade = new DaoGrade(connection);
+
     }
 
     public void getAllStudents() throws DaoException {// Получение всех студентов
         List<StudentsDTO> lst = daoStudents.getAll();
-        Iterator<StudentsDTO> studentsDTOIterator = lst.iterator();
-        while (studentsDTOIterator.hasNext()) {
-            StudentsDTO studentsDTO = studentsDTOIterator.next();
+        for (StudentsDTO studentsDTO : lst) {
             System.out.println(studentsDTO.getId() + "    " + studentsDTO.getFirstName() + "     " + studentsDTO.getLastName());
         }
         System.out.println("_________________________");
@@ -39,15 +42,17 @@ public class ControllerDAO extends DaoException {
     }
 
     public void getAllObjectsGradeOneStudent(Integer studentId) throws DaoException { // Получение всех предметов и оценок одного студента
-        StudentsDTO studentsDTO = daoStudents.getEntityById(studentId);
+        StudentsDTO studentsDTO = daoStudents.getEntityByK(studentId);
         System.out.println(studentsDTO.getFirstName() + "     " + studentsDTO.getLastName());
-        for (GradeDTO gradeDTO : daoGrade.getAllGradesObjectsIdStudents(studentId)) {
-            System.out.println(gradeDTO.getId()+"     "+gradeDTO.getGrade()+"     "+ daoObjects.getEntityById(gradeDTO.getObjectId()).getObject());
+        for (GradeDTO gradeDTO : daoGrade.getAll()) {
+            if (gradeDTO.getStudentId() == studentId) {
+                System.out.println(gradeDTO.getId() + "     " + gradeDTO.getGrade() + "     " + daoObjects.getEntityByK(gradeDTO.getObjectId()).getObject());
+            }
         }
     }
 
     public void createStudent(StudentsDTO studentsDTO) throws DaoException {
-       daoStudents.create(studentsDTO);
+        daoStudents.create(studentsDTO);
     }
 
     public void updateStudent(StudentsDTO studentsDTO) throws DaoException {
@@ -82,6 +87,12 @@ public class ControllerDAO extends DaoException {
         daoGrade.delete(gradeId);
     }
 
+    public void closeConnection() throws DaoException {
+        try {
+            DaoFactory.closeConnection(connection);
+        } catch (DaoException e) {
+            throw new DaoException(e);
+        }
 
-
+    }
 }
